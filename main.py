@@ -45,13 +45,13 @@ class Game:
                     return
                 elif event.type == py.KEYDOWN:
                     if event.key == py.K_RIGHT:
-                        campos_x += 1
+                        campos_x += TILESIZE
                     elif event.key == py.K_LEFT:
-                        campos_x -= 1
+                        campos_x -= TILESIZE
                     elif event.key == py.K_UP:
-                        campos_y -= 1
+                        campos_y -= TILESIZE
                     elif event.key == py.K_DOWN:
-                        campos_y += 1
+                        campos_y += TILESIZE
                 else:
                     print(event)
             
