@@ -17,25 +17,20 @@ class Tile(Sprite):
 class World:
     def __init__(self, size: Tuple[int]) -> None:
         self.size = size
-        self.map_tiles = []
+        self.map_surface = py.Surface((size[0]*TILESIZE,size[1]*TILESIZE))
     
-    def build(self):
+    def build(self, sheet: list[py.Surface]):
         bgs = [0, 1, 5]
         for x in range(self.size[0]):
-            col = []
             for y in range(self.size[1]):
-                col.append(choice(bgs))
-            self.map_tiles.append(col)
-    
-    def render(self, screen: py.Surface, sheet: list[py.Surface], topright = (0,0)):
-        width, height = (screen.get_width(), screen.get_height())
-        subset = [[col[y] for y in col[topright[1]:topright[1]+height]] for col in self.map_tiles[topright[0]:topright[0]+width]]
-        for x in range(width):
-            for y in range(height):
-                tile = sheet[subset[x][y]]
+                tile = choice(bgs)
                 worldpos = (x*TILESIZE, y*TILESIZE)
                 rect = py.Rect(worldpos[0],worldpos[1],TILESIZE,TILESIZE)
-                screen.blit(tile, rect)
+                self.map_surface.blit(sheet[tile], rect)
+        
+    
+    def render(self, screen: py.Surface, sheet: list[py.Surface], topright = (0,0)):
+        screen.blit(self.map_surface, (-topright[0], -topright[1]))
 
 class Game:
     def load_sprites(self):
@@ -64,6 +59,7 @@ class Game:
             campos_x, campos_y = (max(campos_x, 0), max(campos_y, 0))
             self.screen.fill((120,120,120))
             self.world.render(self.screen, self.sheet, (campos_x, campos_y))
+            # self.screen.blit(self.sheet[1], (-4, -8))
             py.display.flip()
 
     def run(self):
@@ -73,7 +69,7 @@ class Game:
 
         self.load_sprites()
         self.world = World((1000,1000))
-        self.world.build()
+        self.world.build(self.sheet)
         self.game_loop()
         py.quit()
 
