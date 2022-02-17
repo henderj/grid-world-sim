@@ -15,16 +15,8 @@ class Game:
                 if event.type == py.QUIT:
                     self.running = False
                     return
-                elif event.type == py.KEYDOWN:
-                    if event.key == py.K_RIGHT:
-                        self.cam.move(1,0)
-                    elif event.key == py.K_LEFT:
-                        self.cam.move(-1,0)
-                    elif event.key == py.K_UP:
-                        self.cam.move(0,-1)
-                    elif event.key == py.K_DOWN:
-                        self.cam.move(0,1)
                 else:
+                    self.cam.process_event(event)
                     print(event)
             
             self.screen.fill((120,120,120))
@@ -35,6 +27,7 @@ class Game:
         py.init()
         self.running = True
         self.screen = py.display.set_mode((WIDTH, HEIGHT))
+        py.key.set_repeat(500, 100)
 
         self.load_sprites()
         self.cam = Camera(py.Rect(0,0,WIDTH / TILESIZE, HEIGHT / TILESIZE))
