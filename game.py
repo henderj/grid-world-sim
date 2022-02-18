@@ -7,7 +7,8 @@ from camera import Camera
 
 class Game:
     def load_sprites(self):
-        self.sheet = SpriteSheet("images/1bitpack_kenney_1.2/Tilesheet/colored.png").load_grid_images(22, 49, x_padding=1, y_padding=1)
+        self.tilesheet = SpriteSheet("images/1bitpack_kenney_1.2/Tilesheet/colored.png").load_grid_images(22, 49, x_padding=1, y_padding=1)
+        self.entitysheet = SpriteSheet("images/1bitpack_kenney_1.2/Tilesheet/colored-transparent.png").load_grid_images(22, 49, x_padding=1, y_padding=1)
 
     def game_loop(self):
         while self.running:
@@ -20,6 +21,7 @@ class Game:
                     print(event)
             
             self.screen.fill((120,120,120))
+            self.world.tick()
             self.world.render(self.screen, self.cam)
             py.display.flip()
 
@@ -33,7 +35,7 @@ class Game:
         self.cam = Camera(py.Rect(0,0,WIDTH / TILESIZE, HEIGHT / TILESIZE))
         self.world = World((100,100))
         self.world.build()
-        self.world.load_surface(self.sheet)
+        self.world.load_surfaces(self.tilesheet, self.entitysheet)
         self.game_loop()
         py.quit()
 
