@@ -9,6 +9,7 @@ class Game:
     def load_sprites(self):
         self.tilesheet = SpriteSheet("images/1bitpack_kenney_1.2/Tilesheet/colored.png").load_grid_images(22, 49, x_padding=1, y_padding=1)
         self.entitysheet = SpriteSheet("images/1bitpack_kenney_1.2/Tilesheet/colored-transparent.png").load_grid_images(22, 49, x_padding=1, y_padding=1)
+        # color key = #472d3c
 
     def game_loop(self):
         while self.running:

@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from enum import Enum
 from typing import Tuple
+from pkg_resources import ensure_directory
 from pygame import Surface, Rect, Vector2
 from camera import Camera
 from metrics import TILESIZE
@@ -19,18 +20,18 @@ class Entity(ABC):
     
     def __init__(self, pos: Vector2) -> None:
         self.pos = pos
+        self.surface: Surface = None
 
     @abstractmethod
-    def tick(self):
+    def tick(self) -> None:
         pass
 
     @abstractmethod
-    def load_surface(self, entitysheet: list[Surface]):
+    def load_surface(self, entitysheet: list[Surface]) -> None:
         pass
 
-    @abstractmethod
-    def render(self, screen: Surface, cam: Camera):
-        pass
+    def get_rect(self) -> Rect:
+        return Rect(self.pos, (TILESIZE, TILESIZE))
 
 class Chicken(Entity):
 
@@ -39,6 +40,9 @@ class Chicken(Entity):
     
     def tick(self):
         return super().tick()
+
+    def load_surface(self, entitysheet: list[Surface]) -> None:
+        self.surface = entitysheet[EntityTypes.CHICKEN.value]
 
 class World:
     def __init__(self, size: Tuple[int, int]) -> None:
@@ -72,6 +76,12 @@ class World:
     def render(self, screen: Surface, cam: Camera):
         surface_topleft_of_cam = ((cam.viewport.left + self.size[0] / 2) * TILESIZE, (cam.viewport.top + self.size[1] / 2) * TILESIZE)
         topleft = (-surface_topleft_of_cam[0], -surface_topleft_of_cam[1])
-        screen.blit(self.map_surface, topleft)
-        for e in self.entities:
-            e.render(screen, cam)
+        world_surface = Surface(screen.get_size())
+        world_surface.blit(self.map_surface, topleft)
+        entities_to_draw = [e for e in self.entities if cam.viewport.colliderect(e.get_rect())]
+        entity_surface = Surface(screen.get_size())
+        for e in entities_to_draw:
+            offset = (e.pos - Vector2(cam.viewport.center)) * TILESIZE
+            topleft_offset = Vector2(entity_surface.get_rect().center) + offset
+            world_surface.blit(e.surface, topleft_offset)
+        screen.blit(world_surface, (0,0))
