@@ -53,7 +53,7 @@ class SpriteSheet:
 
 
     def load_grid_images(
-        self, num_rows, num_cols, x_margin=0, x_padding=0, y_margin=0, y_padding=0
+        self, num_rows, num_cols, x_margin=0, x_padding=0, y_margin=0, y_padding=0, colorkey=None
     ):
         """Load a grid of images.
         x_margin is space between top of sheet and top of first row.
@@ -88,7 +88,7 @@ class SpriteSheet:
                 sprite_rects.append(sprite_rect)
 
 
-        grid_images = self.images_at(sprite_rects)
+        grid_images = self.images_at(sprite_rects, colorkey)
         print(f"Loaded {len(grid_images)} grid images.")
 
 
