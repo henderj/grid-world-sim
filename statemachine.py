@@ -37,7 +37,7 @@ class GoToRandomTarget(State):
             self.entity.pos = self.nextstep
             self.nextstep = self.get_next_step()
             self.until_next_move = self.entity.BASE_MOVE_DELAY * (1/self.entity.speed)
-            if self.nextstep.x == 0 and self.nextstep.y == 0:
+            if self.nextstep.x != 0 and self.nextstep.y != 0:
                 self.until_next_move *= 1.41421 # sqrt of 2
 
         return self
