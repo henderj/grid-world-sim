@@ -2,7 +2,8 @@ from enum import Enum
 from typing import Tuple
 from pygame import Surface, Rect, Vector2
 from camera import Camera
-from entities import Chicken, Entity
+from entities import Entity
+from chicken import Chicken
 from metrics import TILESIZE
 from random import choice
 import numpy as np

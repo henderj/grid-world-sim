@@ -24,21 +24,21 @@ class GoToRandomTarget(State):
         super().__init__(entity)
         range = (8,8)
         self.target: Vector2 = self.pick_new_target(range)
-        self.nextstep: Vector2 = None
+        self.nextstep: Vector2 = self.get_next_step()
         self.until_next_move = entity.BASE_MOVE_DELAY * (1/entity.speed)
 
     def tick(self, dt: int) -> State:
         if self.entity.pos == self.target:
             return Idle(self.entity)
         
-        if self.nextstep == None:
-            self.nextstep = self.get_next_step()
 
         self.until_next_move -= dt
         if self.until_next_move <= 0:
             self.entity.pos = self.nextstep
-            self.nextstep = None
+            self.nextstep = self.get_next_step()
             self.until_next_move = self.entity.BASE_MOVE_DELAY * (1/self.entity.speed)
+            if self.nextstep.x == 0 and self.nextstep.y == 0:
+                self.until_next_move *= 1.41421 # sqrt of 2
 
         return self
 
