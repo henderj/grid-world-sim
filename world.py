@@ -26,7 +26,9 @@ class World:
                 self.tiles[x][y] = tile.value
 
         self.entities: list[Entity] = []
-        self.entities.append(Chicken((0,0)))
+        self.entities.append(Chicken(Vector2(0,0)))
+        self.entities.append(Chicken(Vector2(5,0)))
+        self.entities.append(Chicken(Vector2(-4,3)))
 
     def load_surfaces(self, sheet: list[Surface]):
         for x in range(self.size[0]):
