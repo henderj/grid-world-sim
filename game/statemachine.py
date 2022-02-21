@@ -3,7 +3,7 @@ from random import randint
 from typing import Any
 from pygame import Vector2
 
-from game.entities.entities import Entity
+from game.entities.entity import Entity
 
 class State(ABC):
 

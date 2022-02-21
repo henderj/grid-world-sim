@@ -3,7 +3,7 @@ from typing import Tuple
 from pygame import Surface, Rect, Vector2
 
 from game.camera import Camera
-from game.entities.entity import Entity
+from game.entities.entities import Entity
 from game.entities.chicken import Chicken
 from game.metrics import TILESIZE
 from random import choice

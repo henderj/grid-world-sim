@@ -1,7 +1,7 @@
 from pygame import Surface, Vector2
 from game.statemachine import Idle, StateMachine
 
-from entities.entities import Entity, EntityTypes
+from game.entities.entities import Entity, EntityTypes
 
 class Chicken(Entity):
 

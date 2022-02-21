@@ -3,7 +3,7 @@ from typing import Tuple
 from pygame import Surface, Rect, Vector2
 
 from game.camera import Camera
-from game.entities.entities import Entity
+from game.entities.entity import Entity
 from game.entities.chicken import Chicken
 from game.metrics import TILESIZE
 from random import choice
@@ -50,6 +50,7 @@ class World:
         topleft = (-surface_topleft_of_cam[0], -surface_topleft_of_cam[1])
         world_surface = Surface(screen.get_size())
         world_surface.blit(self.map_surface, topleft)
+        
         entities_to_draw = [e for e in self.entities if cam.viewport.colliderect(e.get_rect())]
         entity_surface = Surface(screen.get_size())
         for e in entities_to_draw:
