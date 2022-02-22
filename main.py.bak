@@ -1,9 +1,0 @@
-import pygame
-import game.game
-
-def main():
-    m_game = game.Game()
-    m_game.run()        
-
-if __name__ == "__main__":
-    main()

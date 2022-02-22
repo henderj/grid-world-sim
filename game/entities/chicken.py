@@ -14,6 +14,7 @@ class Chicken(Entity):
         return 1
 
     def tick(self, dt: int):
+        super().tick(dt)
         self.statemachine.tick(dt)
 
 

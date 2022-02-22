@@ -25,12 +25,13 @@ class GoToRandomTarget(State):
         range = (8,8)
         self.target: Vector2 = self.pick_new_target(range)
         self.nextstep: Vector2 = self.get_next_step()
-        self.until_next_move = entity.BASE_MOVE_DELAY * (1/entity.speed)
+        # self.until_next_move = entity.BASE_MOVE_DELAY * (1/entity.speed)
 
     def tick(self, dt: int) -> State:
         if self.entity.pos == self.target:
             return Idle(self.entity)
-        
+
+
 
         self.until_next_move -= dt
         if self.until_next_move <= 0:
