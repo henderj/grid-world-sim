@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from enum import Enum
+from random import randint
 from typing import Any, Callable
 
 from pygame import Color, Rect, Surface, Vector2
@@ -16,6 +17,11 @@ class Direction(Enum):
     W = Vector2(-1, 0)
     NW = Vector2(-1, 1)
 
+    def pick_random(cls):
+        x = randint(-1, 1)
+        y = randint(-1, 1)
+        vec = Vector2(x, y)
+
 class EntityTypes(Enum):
     CHICKEN = 369
 
@@ -26,6 +32,7 @@ class Entity(ABC):
     def __init__(self, pos: Vector2) -> None:
         self.pos: Vector2 = pos
         self.surface: Surface = None
+        self.is_moving = False
 
     @property
     @abstractmethod

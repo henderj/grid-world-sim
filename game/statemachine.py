@@ -3,7 +3,7 @@ from random import randint
 from typing import Any
 from pygame import Vector2
 
-from game.entities.entity import Entity
+from game.entities.entity import Direction, Entity
 
 class State(ABC):
 
@@ -19,6 +19,20 @@ class Idle(State):
         if randint(1, 1000) == 1: return GoToRandomTarget(self.entity)
         return self
 
+class MoveOneTile(State):
+    def __init__(self, entity: Entity, direction: Direction, next_state: State) -> None:
+        super().__init__(entity)
+        self.next_state = next_state
+        self.is_moving = True
+        self.move_direction = direction
+        self.move_timer = Entity.BASE_MOVE_DELAY * (1/entity.speed)
+
+    def tick(self, dt: int) -> State:
+        self.move_timer -= dt
+        if self.move_timer <= 0:
+            self.entity.pos += self.move_direction.value
+            self.is_moving = False
+
 class GoToRandomTarget(State):
     def __init__(self, entity: Entity) -> None:
         super().__init__(entity)
@@ -31,26 +45,27 @@ class GoToRandomTarget(State):
         if self.entity.pos == self.target:
             return Idle(self.entity)
 
+        if not self.entity.is_moving:
+            self.entity.move(self.get_next_step())
 
-
-        self.until_next_move -= dt
-        if self.until_next_move <= 0:
-            self.entity.pos = self.nextstep
-            self.nextstep = self.get_next_step()
-            self.until_next_move = self.entity.BASE_MOVE_DELAY * (1/self.entity.speed)
-            if self.nextstep.x != 0 and self.nextstep.y != 0:
-                self.until_next_move *= 1.41421 # sqrt of 2
+        # self.until_next_move -= dt
+        # if self.until_next_move <= 0:
+        #     self.entity.pos = self.nextstep
+        #     self.nextstep = self.get_next_step()
+        #     self.until_next_move = self.entity.BASE_MOVE_DELAY * (1/self.entity.speed)
+        #     if self.nextstep.x != 0 and self.nextstep.y != 0:
+        #         self.until_next_move *= 1.41421 # sqrt of 2
 
         return self
 
-    def get_next_step(self) -> Vector2:
-        nextstep = Vector2(0,0)
-        if self.entity.pos.x < self.target.x: nextstep.x = 1
-        elif self.entity.pos.x > self.target.x: nextstep.x = -1
+    def get_next_step(self) -> Direction:
+        # nextstep = Vector2(0,0)
+        # if self.entity.pos.x < self.target.x: nextstep.x = 1
+        # elif self.entity.pos.x > self.target.x: nextstep.x = -1
 
-        if self.entity.pos.y < self.target.y: nextstep.y = 1
-        elif self.entity.pos.y > self.target.y: nextstep.y = -1
-
+        # if self.entity.pos.y < self.target.y: nextstep.y = 1
+        # elif self.entity.pos.y > self.target.y: nextstep.y = -1
+        
         return self.entity.pos + nextstep
 
     def pick_new_target(self, range: tuple[int,int]):
